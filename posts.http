@@ -1,0 +1,29 @@
+GET http://localhost:3000/posts
+
+###
+GET http://localhost:3000/posts/5efea448328370e53d8922a8
+
+###
+POST http://localhost:3000/posts
+Content-Type: application/json
+
+{
+    "username": "Michael",
+    "title": "This is a test",
+    "category": "test",
+    "content": "Test content"
+}
+
+###
+GET http://localhost:3000/posts/5efeb45f8c304267e437b2e8
+
+###
+DELETE http://localhost:3000/posts/5efeb45f8c304267e437b2e8
+
+###
+PUT http://localhost:3000/posts/5efea448328370e53d8922a4
+Content-Type: application/json
+
+{
+    "username": "SARAH"
+}

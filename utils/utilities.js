@@ -1,40 +1,27 @@
-const fs = require('fs');
+const Post = require('../models/post');
 
-let dataFile = '../data/blog_posts.json';
-let blogPosts = require(dataFile);
-
-const getAllPosts = function(req) {
-    const { query } = req;
-    console.log(query);
-    return filter(query);
+const getAllPosts = function() {
+    return Post.find();
 }
 
 const getPostById = function(id) {
-    const post = blogPosts[id];
-    return post;
+    return Post.findById(id);
 }
 
 const addPost = function(req) {
     const date = Date.now();
-    const id = getNextId();
+    req.body.create_date = date;
+    req.body.modified_date = date;
+    return new Post(req.body);
+}
 
-    const post = {
-        title: req.body.title,
-        create_date: date,
-        modified_date: date,
-        username: req.body.username,
-        content: req.body.content,
-        category: req.body.category
-    }
+const deletePost = function(id) {
+    return Post.findByIdAndRemove(id);
+}
 
-    blogPosts[id] = post;
-    try {
-        fs.writeFileSync(getDataFileRelativeToApp(dataFile), JSON.stringify(blogPosts));
-        return post;
-    } catch (error) {
-        req.error = error;
-        return null;
-    }
+const updatePost = function(req) {
+    req.body.modified_date = Date.now();
+    return Post.findByIdAndUpdate(req.params.id, req.body, { new: true });
 }
 
 function filter(query) {
@@ -62,4 +49,4 @@ function getNextId() {
     return String(nextId);
 }
 
-module.exports = { getAllPosts, getPostById, addPost }
+module.exports = { getAllPosts, getPostById, addPost, deletePost, updatePost }
